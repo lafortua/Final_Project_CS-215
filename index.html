@@ -190,7 +190,23 @@
             complete: function(results) {
                 allData = results.data;
                 console.log("CSV Successfully Loaded:", allData);
+
+				// Get an array of just the 'Word' column, filter out any empty rows, and make them unique using Set
+                const allWords = allData.map(row => row.Word).filter(word => word);
+                const uniqueWords = [...new Set(allWords)];
                 
+                // Optional: Sort the words alphabetically for the dropdown
+                uniqueWords.sort((a, b) => a.toString().localeCompare(b.toString()));
+
+                // Get the select element and populate it with the unique words
+                const selectElement = document.getElementById('wordSelect');
+                uniqueWords.forEach(word => {
+                    const option = document.createElement('option');
+                    option.value = word;
+                    option.text = word;
+                    selectElement.appendChild(option);
+                });
+				
                 // Clear the "Loading data..." text and draw the initial plot
                 document.getElementById('plotDiv').innerHTML = ''; 
                 updatePlot();
