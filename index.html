@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Augustus LaFortune</title>
+	<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     body {
       margin: 0;
@@ -165,15 +167,109 @@
     <div id="main">
 
         <div id="content">
-			<details open>
-				<summary><strong>Did Someone Say 'Beer?'</strong></summary>
-				<ul dir="auto">
-                	<li>Since I started working with this dataset, I have been wondering if there really is a correlation between Norm and beer that is reflected purely in the dialogue. (In the show, Norm is a lover of beer.) I used a python function to determine the correlation after I had found the instances of each character's name as well as the word beer. I also widdened the range of lines that would be considered related to the character names. By that I mean that if Norm was mentioned in line 5, I would also include lines 4 and 6 as lines that are related to Norm. Also, for each character, I made sure to also include their last name when looking for instances of thier name appearing.</li>
-            	</ul>
-            	<div>
-                	<iframe src="https://lafortua.github.io/beer_correlation.html"></iframe>
-            	</div>
-			</details>
+			<div class="controls">
+        <label for="wordInput"><strong>Target Word:</strong></label>
+        <input type="text" id="wordInput" value="miss" placeholder="Type a word...">
+        <button onclick="updatePlot()">Update Plot</button>
+    </div>
+
+    <div id="plotDiv" style="width: 100%; max-width: 1200px; height: 600px;">
+        <p style="color: gray;">Loading data...</p>
+    </div>
+
+    <script>
+        let allData = []; // Global variable to hold our parsed CSV rows
+
+        // 1. Load and parse the CSV file
+        Papa.parse("https://lafortua.github.io/Cheers_Character-Keyword_Correlation.csv", {
+            download: true,       // Fetches the file via HTTP
+            delimiter: ";",       // Set the semicolon delimiter
+            header: true,         // Uses the first row as object keys
+            dynamicTyping: true,  // Converts numerical strings to actual numbers automatically
+            skipEmptyLines: true, // Ignores trailing blank lines in the CSV
+            complete: function(results) {
+                allData = results.data;
+                console.log("CSV Successfully Loaded:", allData);
+                
+                // Clear the "Loading data..." text and draw the initial plot
+                document.getElementById('plotDiv').innerHTML = ''; 
+                updatePlot();
+            },
+            error: function(err) {
+                console.error("Error loading CSV:", err);
+                document.getElementById('plotDiv').innerHTML = 
+                    '<p style="color: red;">Error loading CSV file. Are you running a local web server?</p>';
+            }
+        });
+
+        // 2. The update function
+        function updatePlot() {
+            // Ensure data has actually loaded before trying to plot
+            if (allData.length === 0) return;
+
+            const targetWord = document.getElementById('wordInput').value.toLowerCase().trim();
+
+            // Filter the dataset
+            // Using .toLowerCase() on both sides ensures we don't fail due to capitalization differences
+            let filteredData = allData.filter(row => 
+                row.Word && row.Word.toString().toLowerCase() === targetWord
+            );
+
+            if (filteredData.length === 0) {
+                alert(`No data found for the word "${targetWord}".`);
+                return;
+            }
+
+            // Sort by Character alphabetically
+            filteredData.sort((a, b) => a.Character.localeCompare(b.Character));
+
+            // Extract arrays for Plotly
+            const characters = filteredData.map(row => row.Character);
+            const correlations = filteredData.map(row => row.Correlation);
+            const pValues = filteredData.map(row => row.P_value);
+
+            const trace = {
+                x: characters,
+                y: correlations,
+                type: 'bar',
+                marker: {
+                    color: correlations,
+                    colorscale: 'RdBu',
+                    reversescale: true,
+                    cmid: 0, 
+                    colorbar: { title: 'Correlation' }
+                },
+                customdata: pValues,
+                hovertemplate: 
+                    '<b>Character:</b> %{x}<br>' +
+                    '<b>Correlation:</b> %{y:.4f}<br>' +
+                    '<b>P_value:</b> %{customdata:.4f}' +
+                    '<extra></extra>'
+            };
+
+            const layout = {
+                title: `Correlation between "${targetWord}" and Characters`,
+                plot_bgcolor: 'white',
+                xaxis: { title: 'Character' },
+                yaxis: { title: 'Correlation' },
+                shapes: [
+                    {
+                        type: 'line',
+                        x0: 0, x1: 1, xref: 'paper',
+                        y0: 0, y1: 0, yref: 'y',
+                        line: { color: 'black', width: 1 }
+                    }
+                ]
+            };
+
+            Plotly.newPlot('plotDiv', [trace], layout);
+        }
+
+        // Allow pressing "Enter" to trigger the update
+        document.getElementById('wordInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') updatePlot();
+        });
+    </script>
 			
 	    </div>
     </div>
