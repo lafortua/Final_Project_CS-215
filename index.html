@@ -112,8 +112,6 @@
       color: #111;
     }
 
-    li { margin-bottom: 4px; line-height: 1.35; }
-
     #footer {
       text-align: center;
       color: white;
@@ -141,7 +139,7 @@
 
 
     table {
-      margin: 0 0 0 4ch;
+      margin: 1ch 0 1ch 4ch;
       border-collapse: collapse;
       border: 1px solid rgb(60, 80, 80);
     }
@@ -380,40 +378,42 @@
                             </table>
                         </div>
                         <p>Even just looking briefly we can see that most of the top words are the names of the main characters. This makes sense because a character name is something that is relatively unique. The character Sam Malone from Cheers is far from the only Sam that appears in all the movies and tv shows included in the SUBTLEXus corpus, but the name Sam is far from being as prolific as the word "the." Let's see what the top of the list looks like if we ignore the names of the characters.</p>
-                        <table>
-                            <thead>
-                            <th scope="col">Term</th>
-                            <th scope="col">LL Score</th>
-                            <th scope="col">Count</th>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>well</td>
-                                <td>9528.71</td>
-                                <td>5676</td>
-                            </tr>
-                            <tr>
-                                <td>yeah</td>
-                                <td>7446.62</td>
-                                <td>5010</td>
-                            </tr>
-                            <tr>
-                                <td>know</td>
-                                <td>4810.81</td>
-                                <td>5962</td>
-                            </tr>
-                            <tr>
-                                <td>hey</td>
-                                <td>3990.26</td>
-                                <td>2792</td>
-                            </tr>
-                            <tr>
-                                <td>right</td>
-                                <td>3986.78</td>
-                                <td>4462</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div>
+                            <table>
+                                <thead>
+                                <th scope="col">Term</th>
+                                <th scope="col">LL Score</th>
+                                <th scope="col">Count</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>well</td>
+                                    <td>9528.71</td>
+                                    <td>5676</td>
+                                </tr>
+                                <tr>
+                                    <td>yeah</td>
+                                    <td>7446.62</td>
+                                    <td>5010</td>
+                                </tr>
+                                <tr>
+                                    <td>know</td>
+                                    <td>4810.81</td>
+                                    <td>5962</td>
+                                </tr>
+                                <tr>
+                                    <td>hey</td>
+                                    <td>3990.26</td>
+                                    <td>2792</td>
+                                </tr>
+                                <tr>
+                                    <td>right</td>
+                                    <td>3986.78</td>
+                                    <td>4462</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <p>We finally have a list of "Cheers keywords." These words appear uniquely often in the show. I find this list interesting because while watching the show, I did not think about the frequency of these words. Now that I know that the word "well" is used a lot, it is easy to find an example of a conversation that demonstrates the frequent word use. The following is just one example I found.</p>
                         <div>
                             <table>
@@ -437,7 +437,50 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p>This list still does not </p>
+                        <p>This list still does not give us much insight into what defines each individual character. What if, for each of the top keywords, we find its correlation with each of the top characters, and then rank the words by how strong their correlation for any single character is? Let's look at the top of that list.</p>
+                        <div>
+                            <table>
+                                <thead>
+                                <th scope="col">Word</th>
+                                <th scope="col">Character</th>
+                                <th scope="col">Correlation</th>
+                                <th scope="col">P_value</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>miss</td>
+                                    <td>Rebecca</td>
+                                    <td>0.124324</td>
+                                    <td>0.000000e+00</td>
+                                </tr>
+                                <tr>
+                                    <td>tavern</td>
+                                    <td>Gary</td>
+                                    <td>0.107769</td>
+                                    <td>1.020300e-285</td>
+                                </tr>
+                                <tr>
+                                    <td>afternoon</td>
+                                    <td>Norm</td>
+                                    <td>0.058100</td>
+                                    <td>4.011009e-84</td>
+                                </tr>
+                                <tr>
+                                    <td>beer</td>
+                                    <td>Norm</td>
+                                    <td>0.056659</td>
+                                    <td>4.342002e-80</td>
+                                </tr>
+                                <tr>
+                                    <td>olde</td>
+                                    <td>Gary</td>
+                                    <td>0.041680</td>
+                                    <td>3.848727e-44</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>Wow! Each of these word-character pairs can be explained by memorable character interactions in the show. While the correlations are weak, the p-values are extremely low. This means that the correlation almost certainly indicates a real correlation in the data.</p>
                     </div>
                 </section>
             </section>
@@ -448,8 +491,44 @@
                 <h2>Lots of Plots!</h2>
                 <div>
                     <div>
-                        <p>With this plot you can select different keywords identified in the show and look at the correlation the word has with each of the main characters. If the p-value of the correlation between a given character and word is not significant, that is to say, if it is greater than 0.05, the bar will appear greyed out. Hover over any of the bars to see exact numbers for correlation and p-value.</p>
-                        <p>Some words that have an especially low p-value for one or more characters are "beer," "afternoon," "Miss," "mail," "Jeopardy," and "wedding." </p>
+                        <p>To make it easier to see every character's relation to a given word, lets create a bar chart. On this plot the vertical axis is correlation and the different characters are spread along the horizontal axis. If the p-value of the correlation between a given character and word is not significant, that is to say, if it is greater than 0.05, the bar will appear greyed out. You can select any word from the dropdown menu (this includes the top 500 keywords for the show) to explore different plots. You can also hover your cursor over any of the bars to see exact numbers for correlation and p-value.</p>
+                        <div>
+                            <p>The following table lists a few words that I found interesting as well as an explanation.</p>
+                            <table>
+                                <thead>
+                                <th scope="col">Word</th>
+                                <th scope="col">Strong Characters</th>
+                                <th scope="col">Explanation</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>beer</td>
+                                    <td>Norm</td>
+                                    <td>The character Norm is well known for his love of beer.</td>
+                                </tr>
+                                <tr>
+                                    <td>afternoon</td>
+                                    <td>Norm</td>
+                                    <td>Norm often enters the bar saying "Afternoon everyone!" to which the rest of the cast says "Norm!"</td>
+                                </tr>
+                                <tr>
+                                    <td>miss</td>
+                                    <td>Rebecca, Woody, Diane</td>
+                                    <td>Woody very often refers to Rebecca and Diane as Miss. Howe and Miss. Chambers respectively.</td>
+                                </tr>
+                                <tr>
+                                    <td>mail</td>
+                                    <td>Cliff</td>
+                                    <td>Cliff works as a mailman, and he takes great pride in that title. </td>
+                                </tr>
+                                <tr>
+                                    <td>young</td>
+                                    <td>Woody, Kelly</td>
+                                    <td>Woody and Kelly are the two youngest characters of the main cast.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div class="controls">
