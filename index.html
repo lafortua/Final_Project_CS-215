@@ -141,6 +141,7 @@
 
 
     table {
+      margin: 0 0 0 4ch;
       border-collapse: collapse;
       border: 1px solid rgb(60, 80, 80);
     }
@@ -306,7 +307,8 @@
                 <section>
                     <h3>Part 2: How can we find interesting words?</h3>
                     <div>
-                        <p>There are multiple common ways to explore word frequency in a large body of text. The first method that I decided to use is called TF-IDF. This stands for Term Frequency - Inverse Document Frequency. A high weighted TF-IDF is the result of a high term frequency in a given document and a low document frequency of the term in the whole collection of documents. The idea of this is to measure how important a given term is by weighting the document frequency by the specificity of the term. For example, in most documents the word "the" would have the highest document frequency as it is used very often. This also means that it has a low specificity, which lowers its importance. Using TF-IDF did not give very meaningful results. There were dozens of words that were tied for the same score. This is because, even with such a large dataset, there were many words that appeared the same number of times as each other. The following table shows the first five words in the list of all terms used. Each of these words was spoken nine times, in nine different lines throughout the whole tv show's existence.</p>
+                        <p>There are multiple common ways to explore word frequency in a large body of text. The first method that I decided to use is called TF-IDF. This stands for Term Frequency - Inverse Document Frequency. A high weighted TF-IDF is the result of a high term frequency in a given document and a low document frequency of the term in the whole collection of documents. The idea of this is to measure how important a given term is by weighting the document frequency by the specificity of the term. For example, in most documents the word "the" would have the highest document frequency as it is used very often. This also means that it has a low specificity, which lowers its importance. Using TF-IDF did not give very meaningful results. There were dozens of words that were tied for the same score. This is because, even with such a large dataset, there were many words that appeared the same number of times as each other.</p>
+                        <p>The following table shows the first five words in the list of all terms used. Each of these words was spoken nine times, in nine different lines throughout the whole tv show's existence.</p>
                         <div>
                             <table>
                                 <thead>
@@ -339,7 +341,79 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p>Unsatisfied with these results, I started to look for a method that would tell me which words are used uniquely often in the tv show. This search led me to using a Log-Likelihood test against a reference corpus. This would tell me how the word frequencies in my dataset compared to the reference. I decided to use a dataset called the <a href="https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus">SUBTLEXus corpus</a>. This dataset of word frequency is based on the subtitles of English and American movies and tv shows. This makes it a more sensible choice when compared to many other datasets, such as the Brown Corpus, which are based on written documents. </p>
+                        <p>Unsatisfied with these results, I started to look for a method that would tell me which words are used uniquely often in the tv show. This search led me to using a Log-Likelihood test against a reference corpus. This would tell me how the word frequencies in my dataset compared to the reference. I decided to use a dataset called the <a href="https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus">SUBTLEXus corpus</a>. This dataset of word frequency is based on the subtitles of English and American movies and tv shows. This makes it a more sensible choice when compared to many other datasets, such as the Brown Corpus, which are based on written documents.</p>
+                        <p>Let's look at the top five words with the highest LL score. (The five most overrepresented words in the tv show.)</p>
+                        <div>
+                            <table>
+                                <thead>
+                                    <th scope="col">Term</th>
+                                    <th scope="col">LL Score</th>
+                                    <th scope="col">Count</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>sam</td>
+                                        <td>27773.17</td>
+                                        <td>4217</td>
+                                    </tr>
+                                    <tr>
+                                        <td>woody</td>
+                                        <td>16718.80</td>
+                                        <td>1911</td>
+                                    </tr>
+                                    <tr>
+                                        <td>norm</td>
+                                        <td>10618.21</td>
+                                        <td>1173</td>
+                                    </tr>
+                                    <tr>
+                                        <td>well</td>
+                                        <td>9528.71</td>
+                                        <td>5676</td>
+                                    </tr>
+                                    <tr>
+                                        <td>diane</td>
+                                        <td>8403.56</td>
+                                        <td>1093</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>Even just looking briefly we can see that most of the top words are the names of the main characters. This makes sense because a character name is something that is relatively unique. The character Sam Malone from Cheers is far from the only Sam that appears in all the movies and tv shows included in the SUBTLEXus corpus, but the name Sam is far from being as prolific as the word "the." Let's see what happens if we ignore the names of the characters.</p>
+                        <table>
+                            <thead>
+                            <th scope="col">Term</th>
+                            <th scope="col">LL Score</th>
+                            <th scope="col">Count</th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>well</td>
+                                <td>9528.71</td>
+                                <td>5676</td>
+                            </tr>
+                            <tr>
+                                <td>yeah</td>
+                                <td>7446.62</td>
+                                <td>5010</td>
+                            </tr>
+                            <tr>
+                                <td>know</td>
+                                <td>4810.81</td>
+                                <td>5962</td>
+                            </tr>
+                            <tr>
+                                <td>hey</td>
+                                <td>3990.26</td>
+                                <td>2792</td>
+                            </tr>
+                            <tr>
+                                <td>right</td>
+                                <td>3986.78</td>
+                                <td>4462</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
             </section>
