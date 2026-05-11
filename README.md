@@ -4,7 +4,7 @@
 - This file has all of the data that I collected and cleaned from the transcript website as well as IMDb.
 
 ## Cheers_Name_Index.csv
-- This file indicates each time one of the main characters is mentioned in one of the lines.
+- This file indicates each time one of the main characters is mentioned in one of the lines. (0 is no mention and 1 is mention)
 - Each row corresponds to the same line in the Cheers_Line.csv file.
 
 ## Cheers_Keywords.csv
