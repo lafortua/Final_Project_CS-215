@@ -324,7 +324,7 @@
                         <p>One limitation with this dataset is that I do not know which character is speaking each line. This means I can not do specific character dialogue analysis like seeing if Norm says the word "beer" more than the average character on the show. This does not mean, however, that I have no way of investigating the correlation of any given character and word. Since people often speak the name of the person that they are talking to, I am able to use that as a proxy for a character's relevance to a given conversation. Look at the following exchanges to see how this works.</p>
                         <div>
                             <details open>
-                                <summary><strong>Example 1:</strong></summary>
+                                <summary><strong>Example 1-a:</strong></summary>
                                 <div>
                                     <table>
                                         <thead>
@@ -369,7 +369,7 @@
                             </details>
 
                             <details open>
-                                <summary><strong>Example 2:</strong></summary>
+                                <summary><strong>Example 1-b:</strong></summary>
                                 <div>
                                     <table>
                                         <thead>
@@ -411,7 +411,75 @@
                             </details>
                         </div>
                         <p>I chose to consider a character relevant to a given line if the character's name was spoken within two lines of it. This is an arbitrary range that I chose based on the nature of conversations that I observed. This means that in the first example above, Norm (mentioned in line #4) would be considered relevant for lines #2-6. Since the word "beer" is spoken in line #5, this instance of the word "beer" is considered to be related in some way to the character Norm.</p>
-                        <p>I created a new file (<a href="https://github.com/lafortua/Final_Project_CS-215/blob/main/Cheers_Name_Index.csv">Cheers_Name_Index.csv</a>) that, for each of the 15 characters, and each of the 111,697 lines of dialogue, indicated if the character was mentioned near that line. When performing this step, I made sure to be aware of other names the character may go by and to count those too. (For example, the character Sam also uses the name "Malone," "Sammy," or "Mayday.") The character index data was simply stored as a boolean. Either the character was mentioned nearby (true), or they were not (false). This data was stored in a file to avoid needing to check each string for every name every time the code is run. Next, I created another file that contained the index of every occurrence of the word "beer." Given these two files, I was able to easily calculate the correlation between each character and the word "beer." But before we look at that, let's find out what other words might bring up interesting correlations.</p>
+                        <p>I created a new file (<a href="https://github.com/lafortua/Final_Project_CS-215/blob/main/Cheers_Name_Index.csv">Cheers_Name_Index.csv</a>) that, for each of the 15 characters, and each of the 111,697 lines of dialogue, indicated if the character was mentioned near that line. When performing this step, I made sure to be aware of other names the character may go by and to count those too. (For example, the character Sam also uses the name "Malone," "Sammy," or "Mayday.") The character index data was simply stored as a boolean. Either the character was mentioned nearby (true / 1), or they were not (false / 0). Look at Example 2 to see how this works. Look at the new character columns for this same exchange we looked at in Example 1-a. (For the sake of clarity, the two lines above and below each name mention is not included in this example index. In the Cheers_Name_Index.csv file, however, the nearby lines are included.)</p>
+                        <details open>
+                            <summary><strong>Example 2:</strong></summary>
+                            <div>
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Line (S11E8)</th>
+                                        <th scope="col">Sam</th>
+                                        <th scope="col">Woody</th>
+                                        <th scope="col">Norm</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Well, whatever. Congratulations.</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Yeah, you know, when, uh, Woody Boyd talks, people listen.</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>Matter of fact, Sam, I'm gonna do you a great, big favor.</td>
+                                        <td>1</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>Mr. Peterson, I'm gonna talk and you're gonna listen.</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>It's about your beer tab.</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>Wood, stay in the shallow end.</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Yeah, maybe you're right, sorry.</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                        <p>This data was saved to the Cheers_Name_Index.csv file in order to avoid needing to recheck each string for every name every time the code is run. Next, I created a similar file that contained the index of every occurrence of the word "beer." (This time not including the nearby lines, because unlike with the character names there is no uncertainty as to when beer is relevant in the conversation. It is spoken directly when it is relevant.) Given these two files, I was able to easily calculate the correlation between each character and the word "beer." But before we look at that, let's find out what other words might bring up interesting correlations.</p>
                     </div>
                 </section>
 
