@@ -1,5 +1,7 @@
 # Final_Project_CS-215
 
+Note: All .csv files use ";" as the delimiter.
+
 ## Cheers_Lines.csv
 - This file has all of the data that I collected and cleaned from the transcript website as well as IMDb.
 
