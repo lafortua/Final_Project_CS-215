@@ -186,7 +186,51 @@
                 <h2>An Introduction to Cheers</h2>
                 <div>
                     <p>Cheers was a sitcom tv show that ran for 11 years from 1982 to 1993, had 11 seasons, and 270 episodes. The show takes place in a small bar of the same name in downtown Boston. As is typical of a sitcom, the show is often formulaic and the main cast of characters each have strong personalities that don't change a lot throughout the whole series. </p>
-                    <p>Having recently finished watching all 11 seasons of the show, I wondered if the strong personalities can actually be captured by concrete data analysis. To start, I needed to find the data.</p>
+                    <p>Having recently finished watching all 11 seasons of the show, the characters are still strong in my mind. Are the characters' strong personalities and mannerisms represented in data from the show? To start, I needed to find the data.</p>
+                    <div>
+                        <details>
+                            <summary>Most resources used are linked when referenced. <strong>Expand to see more extensive list is below.</strong></summary>
+                            <ul>
+                                <li>
+                                    Cheers data:
+                                    <ul>
+                                        <li>Subslikescript: <a href="https://subslikescript.com/series/Cheers-83399">https://subslikescript.com/series/Cheers-83399</a> (Used as the source for the transcripts of all episodes.)</li>
+                                        <li>IMDb: <a href="https://www.imdb.com/title/tt0083399/">https://www.imdb.com/title/tt0083399/</a> (Used for episode air dates, ratings, and number of rating votes. Also used for general information on the show such as character list.)</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Web crawling:
+                                    <ul>
+                                        <li>Jsoup: <a href="https://jsoup.org/">https://jsoup.org/</a> (Used to fetch and parse the transcripts and IMDb data. I used the API reference that is on the official site as well as forum sites such as Stack Overflow or GeeksforGeeks for debugging and troubleshooting.)</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Natural language processing:
+                                    <ul>
+                                        <li>GeeksforGeeks: <a href="https://www.geeksforgeeks.org/">https://www.geeksforgeeks.org/</a> (Used to understand the basics of TF-IDF and LL tests.)</li>
+                                        <li>Natural Language Toolkit: <a href="https://www.nltk.org/">https://www.nltk.org/</a> (Used to implement much of the natural language processing in Python. I used the reference docs that are on the official site as well as forum sites such as Stack Overflow or GeeksforGeeks for debugging and troubleshooting.)</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Numerical analysis and display:
+                                    <ul>
+                                        <li>SciPy: <a href="https://docs.scipy.org/doc/">https://docs.scipy.org/doc/</a> (Used for various parts of analysis including p-value calculation. I used the reference docs that are on the official site as well as forum sites such as Stack Overflow or GeeksforGeeks for debugging and troubleshooting.)</li>
+                                        <li>Plotly: <a href="https://plotly.com/">https://plotly.com/</a> (Used for making graphs and plots in both Python and JavaScript. I used the reference docs that are on the official site as well as forum sites such as Stack Overflow or GeeksforGeeks for debugging and troubleshooting.)</li>
+                                        <li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">https://developer.mozilla.org/en-US/docs/Web/HTML</a> (Used to understand how to use html. I used the reference docs that are on this site.)</li>
+                                        <li>Python: <a href="https://www.python.org/doc/">https://www.python.org/doc/</a> (I used the reference docs that are on the official site as well as forum sites such as Stack Overflow or GeeksforGeeks for debugging and troubleshooting.)</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Debugging and troubleshooting:
+                                    <ul>
+                                        <li>GeeksforGeeks: <a href="https://www.geeksforgeeks.org/">https://www.geeksforgeeks.org/</a></li>
+                                        <li>Stack Overflow: <a href="https://stackoverflow.com/">https://stackoverflow.com/</a></li>
+                                        <li>Google Gemini: <a href="https://gemini.google.com/">https://gemini.google.com/</a> (Used sparingly and only after other debugging attempts were made. Never used to simply implement new code, only to fix old code.)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </details>
+                    </div>
                 </div>
             </section>
 
@@ -195,8 +239,77 @@
             <section>
                 <h2>Obtaining, Combining, and Cleaning the Data</h2>
                 <div>
-                    <p>I obtained data from two different sources. The first source was <a href="https://subslikescript.com/series/Cheers-83399">a TV show transcripts website</a> which gave me the transcripts of all episodes in the series. I wrote my own Java code that uses the Jsoup library to download the individual lines directly from the website. In this step I recorded the line, the season and episode number, and the name of the episode. While exploring the data, I noticed that here were some errors such as the letter "l" occasionally being in places where the letter "I" should be. I wrote my own Java code that fixed many of these errors using search and replace while being conscious of context. I also got information from <a href="https://www.imdb.com/title/tt0083399/">IMDb</a> using Jsoup and my own Java code. This was more difficult however because the website doesn't just use html to load the page. I was able to easily download the loaded page as html and then parse and clean the information from there. This is how I got the information on air date, rating, and number of votes for that rating. I then wrote some more java code that combined these two datasets into a single csv file with 111,697 rows and 7 columns. At this point there is one line on each row of the file, and the columns are organized as: line text, season number, episode number, episode title, air date, rating (out of 10), and the number of people that voted for that rating.</p>
-                    <p>I made the decision to use semicolons as the delimiter of the file instead of the more widely used comma. This is because commas are used extensively in the dialogue, and it would be rather disruptive to remove them from the text entirely. While semicolons did appear in the dialogue, they did so much less often. Therefore, I decided to replace each semicolon in the dialogue with a comma. This does not completely preserve the grammatical integrity of the text, but I deemed it the better option when compared to removing all commas.</p>
+                    <p>I obtained data from two different sources. The first source was <a href="https://subslikescript.com/series/Cheers-83399">a TV show transcripts website called Subslikescript</a> which gave me the transcripts of all episodes in the series. I wrote my own Java code that uses <a href="https://jsoup.org/">the Jsoup library</a> to download the individual lines directly from the website. In this step I recorded the line, the season and episode number, and the name of the episode. While exploring the data, I noticed that here were some errors such as the letter "<code>l</code>" occasionally being in places where the letter "<code>I</code>" should be. I wrote my own Java code that fixed many of these errors using search and replace while being conscious of context. I also got information from <a href="https://www.imdb.com/title/tt0083399/">IMDb</a> using Jsoup and my own Java code. This was more difficult however because the website doesn't just use html to load the page. I was able to easily download the loaded page as html and then parse and clean the information from there. This is how I got the information on air date, rating, and number of votes for that rating. I then wrote some more java code that combined these two datasets into a single csv file (<a href="https://github.com/lafortua/Final_Project_CS-215/blob/main/Cheers_Lines.csv">Cheers_Lines.csv</a>) with 111,697 rows and 7 columns. At this point there is one line on each row of the file, and the columns are organized as: line text, season number, episode number, episode title, air date, rating (out of 10), and the number of people that voted for that rating.</p>
+                    <p>I made the decision to use semicolons as the delimiter of the file instead of the more widely used comma. This is because commas are used extensively in the dialogue, and it would be rather disruptive to remove them from the text entirely. While semicolons did appear in the dialogue, they did so much less often. Therefore, I decided to replace each semicolon in the dialogue with a comma. This does not completely preserve the grammatical integrity of the text, but I deemed it the better option when compared to removing all commas. For consistency, all .csv files in this project use ";" as the delimiter.</p>
+                </div>
+                <div>
+                    <p>Let's look at the first five lines from this file.</p>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th scope="col">[Index]</th>
+                            <th scope="col">Text</th>
+                            <th scope="col">Season</th>
+                            <th scope="col">Episode</th>
+                            <th scope="col">EpisodeTitle</th>
+                            <th scope="col">AirDate</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Votes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>How about a beer, chief?</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Give Me a Ring Sometime</td>
+                            <td>Sep 30, 1982</td>
+                            <td>8.2</td>
+                            <td>1700</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>How about an ID?</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Give Me a Ring Sometime</td>
+                            <td>Sep 30, 1982</td>
+                            <td>8.2</td>
+                            <td>1700</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>An ID?</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Give Me a Ring Sometime</td>
+                            <td>Sep 30, 1982</td>
+                            <td>8.2</td>
+                            <td>1700</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>That's very flattering!</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Give Me a Ring Sometime</td>
+                            <td>Sep 30, 1982</td>
+                            <td>8.2</td>
+                            <td>1700</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Wait till I tell the missus.</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>Give Me a Ring Sometime</td>
+                            <td>Sep 30, 1982</td>
+                            <td>8.2</td>
+                            <td>1700</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 
@@ -297,16 +410,16 @@
                                 <p>We can see that the word "beer" is spoken in line #3. We again don't know who spoke the word, but this time we could surmise that it was spoken by Norm. This time there is also a name that appears in the same sentence. At this point however, we are only interested in Norm's relationship with beer. We can see that Norm's name is spoken in line #4, just one line after the word "beer" appears. Again, this concretely places Norm's name close to a conversation that mentions "beer," regardless of speaker.</p>
                             </details>
                         </div>
-                        <p>I chose to consider a character relevant to a given line if the character's name was spoken within two lines of it. This is an arbitrary range that I chose based on the nature of conversations. This means that in the first example above, Norm, mentioned in line #4, would be considered relevant for lines #2-6. Since the word "beer" is spoken in line #5, this instance of the word "beer" is considered to be related in some way to the character Norm.</p>
-                        <p>I created a new file (<a href="https://lafortua.github.io/Final_Project_CS-215/Cheers_Name_Index.csv">Cheers_Name_Index.csv</a>) that, for each of the 15 characters, and each of the 111,697 lines of dialogue, indicated if the character was mentioned near that line. When performing this step, I made sure to be aware of other names the character may go by and to count those too. (For example, the character Sam would also answer to "Malone," "Sammy," or "Mayday.") The data was simply stored as a boolean. Either the character was mentioned nearby, or they were not. Next, I created another file that contained the index of every occurrence of the word "beer." Given these two files, I was able to easily calculate the correlation between each character and the word "beer." But before we look at that, let's find out what other words might bring up interesting correlations.</p>
+                        <p>I chose to consider a character relevant to a given line if the character's name was spoken within two lines of it. This is an arbitrary range that I chose based on the nature of conversations that I observed. This means that in the first example above, Norm (mentioned in line #4) would be considered relevant for lines #2-6. Since the word "beer" is spoken in line #5, this instance of the word "beer" is considered to be related in some way to the character Norm.</p>
+                        <p>I created a new file (<a href="https://github.com/lafortua/Final_Project_CS-215/blob/main/Cheers_Name_Index.csv">Cheers_Name_Index.csv</a>) that, for each of the 15 characters, and each of the 111,697 lines of dialogue, indicated if the character was mentioned near that line. When performing this step, I made sure to be aware of other names the character may go by and to count those too. (For example, the character Sam also uses the name "Malone," "Sammy," or "Mayday.") The character index data was simply stored as a boolean. Either the character was mentioned nearby (true), or they were not (false). This data was stored in a file to avoid needing to check each string for every name every time the code is run. Next, I created another file that contained the index of every occurrence of the word "beer." Given these two files, I was able to easily calculate the correlation between each character and the word "beer." But before we look at that, let's find out what other words might bring up interesting correlations.</p>
                     </div>
                 </section>
 
                 <section>
                     <h3>Part 2: How can we find interesting words?</h3>
                     <div>
-                        <p>There are multiple common ways to explore word frequency in a large body of text. The first method that I decided to use is called TF-IDF. This stands for Term Frequency - Inverse Document Frequency. A high weighted TF-IDF is the result of a high term frequency in a given document and a low document frequency of the term in the whole collection of documents. The idea of this is to measure how important a given term is by weighting the document frequency by the specificity of the term. For example, in most documents the word "the" would have the highest document frequency as it is used very often. This also means that it has a low specificity, which lowers its importance. Using TF-IDF did not give very meaningful results. There were dozens of words that were tied for the same score. This is because, even with such a large dataset, there were many words that appeared the same number of times as each other.</p>
-                        <p>The following table shows the first five words in the list of all terms used. Each of these words was spoken nine times, in nine different lines throughout the whole tv show's existence.</p>
+                        <p>There are multiple common ways to explore word frequency in a large body of text. The first method that I decided to use is called <a href="https://www.geeksforgeeks.org/machine-learning/understanding-tf-idf-term-frequency-inverse-document-frequency/">TF-IDF</a>. This stands for Term Frequency - Inverse Document Frequency. A high weighted TF-IDF is the result of a high term frequency in a given document and a low document frequency of the term in the whole collection of documents. The idea of this is to measure how important a given term is by weighting the document frequency by the specificity of the term. For example, in most documents the word "the" would have the highest document frequency as it is the most often word used in the English language. This also means that it has a low specificity, which lowers its importance.</p>
+                        <p>Using TF-IDF on this dataset did not give very meaningful results. There were dozens of words that were tied for the same score. This is because, even with such a large dataset, there were many words that appeared the exact same number of times as each other. The following table shows the first five words in the list of all terms used. Each of these words was spoken nine times, in nine different lines throughout the whole tv show.</p>
                         <div>
                             <table>
                                 <thead>
@@ -339,7 +452,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p>Unsatisfied with these results, I started to look for a method that would tell me which words are used uniquely often in the tv show. This search led me to using a Log-Likelihood test against a reference corpus. This would tell me how the word frequencies in my dataset compared to the reference. I decided to use a dataset called the <a href="https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus">SUBTLEXus corpus</a>. This dataset of word frequency is based on the subtitles of English and American movies and tv shows. This makes it a more sensible choice when compared to many other datasets, such as the Brown Corpus, which are based on written documents.</p>
+                        <p>Unsatisfied with these results, I started to look for a method that would tell me which words are used uniquely often in the tv show. This search led me to using a <a href="https://www.geeksforgeeks.org/data-science/log-likelihood/">Log-Likelihood test</a> against a reference corpus. This would tell me how the word frequencies in my dataset compared to the reference. I decided to use a dataset called the <a href="https://www.ugent.be/pp/experimentele-psychologie/en/research/documents/subtlexus">SUBTLEXus corpus</a> as the reference. This dataset of word frequency is based on the subtitles of English and American movies and tv shows. This makes it a more sensible choice when compared to many other datasets, such as the Brown Corpus, which are based on written documents or are far out of date.</p>
                         <p>Let's look at the top five words with the highest LL score. (The five most overrepresented words in the tv show.)</p>
                         <div>
                             <table>
@@ -377,7 +490,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p>Even just looking briefly we can see that most of the top words are the names of the main characters. This makes sense because a character name is something that is relatively unique. The character Sam Malone from Cheers is far from the only Sam that appears in all the movies and tv shows included in the SUBTLEXus corpus, but the name Sam is far from being as prolific as the word "the." Let's see what the top of the list looks like if we ignore the names of the characters.</p>
+                        <p>Even just looking briefly we can see that most of the top words are the names of the main characters. This makes sense because a character name is something that is relatively unique. The character Sam Malone from Cheers is far from the only Sam that appears in all the movies and tv shows included in the SUBTLEXus corpus, but the name Sam is far from being as prolific as most English words. Let's see what the top of the list looks like if we ignore the names of the characters.</p>
                         <div>
                             <table>
                                 <thead>
@@ -414,7 +527,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p>We finally have a list of "Cheers keywords." These words appear uniquely often in the show. I find this list interesting because while watching the show, I did not think about the frequency of these words. Now that I know that the word "well" is used a lot, it is easy to find an example of a conversation that demonstrates the frequent word use. The following is just one example I found.</p>
+                        <p>We finally have a list of "Cheers keywords." These words appear uniquely often in the show. I saved this list to another .csv file (<a href="https://github.com/lafortua/Final_Project_CS-215/blob/main/Cheers_Clean_Keywords.csv">Cheers_Clean_Keywords.csv</a>). I find this list interesting because while watching the show, I did not think about the frequency of these words. Now that I know that the word "well" is used a lot, it is easy to find an example of a conversation that demonstrates the frequent word use. The following is just one example I found.</p>
                         <div>
                             <table>
                                 <thead>
@@ -437,7 +550,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <p>This list still does not give us much insight into what defines each individual character. What if, for each of the top keywords, we find its correlation with each of the top characters, and then rank the words by how strong their correlation for any single character is? Let's look at the top of that list.</p>
+                        <p>While this list is more meaningful, it still does not give us much insight into what defines each individual character. What if, for each of the top keywords, we find its correlation with each of the top characters, and then rank the words by how strong their correlation for any single character is? These values are stored in a new file (<a href="https://github.com/lafortua/Final_Project_CS-215/blob/main/Cheers_Character-Keyword_Correlation.csv">Cheers_Character-Keyword_Correlation.csv</a>). Let's look at the top of that list.</p>
                         <div>
                             <table>
                                 <thead>
@@ -487,13 +600,13 @@
 
             <hr />
 
-            <div>
+            <section>
                 <h2>Lots of Plots!</h2>
                 <div>
                     <div>
-                        <p>To make it easier to see every character's relation to a given word, lets create a bar chart. On this plot the vertical axis is correlation and the different characters are spread along the horizontal axis. If the p-value of the correlation between a given character and word is not significant, that is to say, if it is greater than 0.05, the bar will appear greyed out. You can select any word from the dropdown menu (this includes the top 500 keywords for the show) to explore different plots. You can also hover your cursor over any of the bars to see exact numbers for correlation and p-value.</p>
+                        <p>To make it easier to see every character's relation to a given word, lets create a bar chart. On this plot the vertical axis is correlation and the different characters are spread along the horizontal axis. If the p-value of the correlation between a given character and word is not significant, that is to say, if it is greater than 0.05, the bar will appear greyed out. You can select any word from the dropdown menu (this includes the top 400 or so keywords for the show) to explore different plots. You can also hover your cursor over any of the bars to see exact numbers for correlation and p-value.</p>
                         <div>
-                            <p>The following table lists a few words that I found interesting as well as an explanation.</p>
+                            <p>The following table lists a few words that I found interesting. I also included an explanation for each.</p>
                             <table>
                                 <thead>
                                 <th scope="col">Word</th>
@@ -647,12 +760,23 @@
 
                     </script>
                 </div>
-            </div>
+            </section>
+
+            <hr />
+
+            <section>
+                <h2 title="(This is a reference to the Cheers theme song.)">A place where everybody knows your name</h2>
+                <div>
+                    <p>Let's look back at our original question: "Are the characters' strong personalities and mannerisms represented in data from the show?" The answer is yes. Characters are clearly correlated with their job titles, favorite things, and common phrases.</p>
+                </div>
+
+            </section>
+
 	    </div>
     </div>
 
     <div id="footer">
-        <a href="https://www.rfc-editor.org/rfc/rfc2324.txt" class="plain-link"><i>Error 418</i></a>
+        (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧
     </div>
   </div>
 </body>
